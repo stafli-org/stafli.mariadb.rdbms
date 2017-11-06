@@ -148,22 +148,22 @@ purge:
 		@echo Purging containers, networks, volumes and images for debian8...
 		bash -c "(cd debian8; set -o allexport; source .env; set +o allexport; docker-compose down)";
 		docker volume rm debian8_mariadb10_data;
-		docker rmi solict/high-performance-php-stack:debian8_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:debian8_mariadb10;
 		@echo
 		@echo Purging containers, networks, volumes and images for debian7...
 		bash -c "(cd debian7; set -o allexport; source .env; set +o allexport; docker-compose down)";
 		docker volume rm debian7_mariadb10_data;
-		docker rmi solict/high-performance-php-stack:debian7_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:debian7_mariadb10;
 		@echo
 		@echo Purging containers, networks, volumes and images for centos7...
 		bash -c "(cd centos7; set -o allexport; source .env; set +o allexport; docker-compose down)";
 		docker volume rm centos7_mariadb10_data;
-		docker rmi solict/high-performance-php-stack:centos7_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:centos7_mariadb10;
 		@echo
 		@echo Purging containers, networks, volumes and images for centos6...
 		bash -c "(cd centos6; set -o allexport; source .env; set +o allexport; docker-compose down)";
 		docker volume rm centos6_mariadb10_data;
-		docker rmi solict/high-performance-php-stack:centos6_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:centos6_mariadb10;
         else
 		@echo Purging containers, networks, volumes and images for $(DISTRO)...
 		bash -c "(cd $(DISTRO); set -o allexport; source .env; set +o allexport; docker-compose down)";
@@ -244,16 +244,16 @@ img-rm:
 	@echo
         ifeq ($(DISTRO), all)
 		@echo Removing images for debian8...
-		docker rmi solict/high-performance-php-stack:debian8_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:debian8_mariadb10;
 		@echo
 		@echo Removing images for debian7...
-		docker rmi solict/high-performance-php-stack:debian7_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:debian7_mariadb10;
 		@echo
 		@echo Removing images for centos7...
-		docker rmi solict/high-performance-php-stack:centos7_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:centos7_mariadb10;
 		@echo
 		@echo Removing images for centos6...
-		docker rmi solict/high-performance-php-stack:centos6_mariadb10;
+		docker rmi stafli/stafli.mariadb.rdbms:centos6_mariadb10;
         else
 		@echo Removing images for $(DISTRO)...
 		docker rmi solict/high-performance-php-stack:$(DISTRO)_mariadb10;

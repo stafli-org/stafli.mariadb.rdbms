@@ -41,7 +41,7 @@ services:
       - "architecture=$BUILD_ARCH"
       - "org.label-schema.version=$BUILD_VERSION"
       - "org.label-schema.build-date=$BUILD_DATE"
-    image: "solict/high-performance-php-stack:centos7_mariadb10"
+    image: "stafli/stafli.mariadb.rdbms:centos7_mariadb10"
     build:
       context: "./dockerfiles"
       dockerfile: "mariadb10.dockerfile"

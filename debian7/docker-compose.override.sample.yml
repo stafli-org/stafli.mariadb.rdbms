@@ -32,6 +32,5 @@ services:
       args:
         app_mariadb_listen_port: "3306"
     ports:
-      - "10022"
       - "3306"
 

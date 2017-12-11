@@ -89,7 +89,7 @@ RUN printf "Updading Supervisor configuration...\n"; \
     # /etc/supervisor/conf.d/init.conf \
     file="/etc/supervisor/conf.d/init.conf"; \
     printf "\n# Applying configuration for ${file}...\n"; \
-    perl -0p -i -e "s>supervisorctl start crond;>supervisorctl start crond; supervisorctl start mysql;>" ${file}; \
+    perl -0p -i -e "s>supervisorctl start rclocal;>supervisorctl start rclocal; supervisorctl start mysql;>" ${file}; \
     printf "Done patching ${file}...\n"; \
     \
     # /etc/supervisor/conf.d/mysql.conf \
@@ -141,6 +141,15 @@ RUN printf "Updading MariaDB configuration...\n"; \
     perl -0p -i -e "s>.*default-character-set = .*>default-character-set = utf8>" ${file}; \
     perl -0p -i -e "s>.*character-set-server  = .*>character-set-server  = utf8>" ${file}; \
     perl -0p -i -e "s>.*collation-server      = .*>collation-server      = utf8_general_ci>" ${file}; \
+    printf "Done patching ${file}...\n"; \
+    \
+    # /etc/mysql/conf.d/mysqld_safe_syslog.cnf \
+    file="/etc/mysql/conf.d/mysqld_safe_syslog.cnf"; \
+    printf "\n# Applying configuration for ${file}...\n"; \
+    # change logging from syslog to files \
+    # http://baligena.com/mysql-enable-error-logging/ \
+    perl -0p -i -e "s>.*skip_log_error>#skip_log_error>" ${file}; \
+    perl -0p -i -e "s>.*syslog>#syslog>" ${file}; \
     printf "Done patching ${file}...\n"; \
     \
     printf "\n# Testing configuration...\n"; \

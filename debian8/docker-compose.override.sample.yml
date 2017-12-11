@@ -27,7 +27,7 @@ version: '2'
 #
 services:
 
-  debian8_mariadb10_rdbms:
+  rdbms_mariadb10_debian8:
     build:
       args:
         app_mariadb_listen_port: "3306"

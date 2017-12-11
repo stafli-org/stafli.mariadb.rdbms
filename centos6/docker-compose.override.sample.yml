@@ -27,7 +27,7 @@ version: '2'
 #
 services:
 
-  centos6_mariadb10_rdbms:
+  rdbms_mariadb10_centos6:
     build:
       args:
         app_mariadb_listen_port: "3306"

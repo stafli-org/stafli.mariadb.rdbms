@@ -27,7 +27,7 @@ version: '2'
 #
 services:
 
-  debian7_mariadb10_rdbms:
+  rdbms_mariadb10_debian7:
     labels:
       - "org.label-schema.schema-version=1.0"
       - "org.label-schema.name=$PROJECT_NAME"
@@ -54,7 +54,7 @@ services:
       - "org.label-schema.os-architecture=$BUILD_ARCH"
       - "org.label-schema.version=$BUILD_VERSION"
       - "org.label-schema.build-date=$BUILD_DATE"
-    image: "${IMAGE_URL_PREFIX}:debian7_mariadb10"
+    image: "${IMAGE_URL_PREFIX}:mariadb10_debian7"
     build:
       context: "./dockerfiles"
       dockerfile: "mariadb10.dockerfile"
@@ -67,7 +67,7 @@ services:
     logging:
       driver: "json-file"
     volumes:
-      - debian7_mariadb10_rdbms_data:/var/lib/mysql
+      - rdbms_mariadb10_debian7_data:/var/lib/mysql
     ports:
       - "3306"
     working_dir: "/tmp"
@@ -77,6 +77,6 @@ services:
 # Volumes
 #
 volumes:
-  debian7_mariadb10_rdbms_data:
+  rdbms_mariadb10_debian7_data:
     driver: "local"
 

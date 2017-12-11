@@ -27,7 +27,7 @@ version: '2'
 #
 services:
 
-  mariadb10:
+  centos6_mariadb10_rdbms:
     labels:
       - "org.label-schema.schema-version=1.0"
       - "org.label-schema.name=$PROJECT_NAME"
@@ -54,7 +54,7 @@ services:
       - "org.label-schema.os-architecture=$BUILD_ARCH"
       - "org.label-schema.version=$BUILD_VERSION"
       - "org.label-schema.build-date=$BUILD_DATE"
-    image: "stafli/stafli.mariadb.rdbms:centos6_mariadb10"
+    image: "${IMAGE_URL_PREFIX}:centos6_mariadb10"
     build:
       context: "./dockerfiles"
       dockerfile: "mariadb10.dockerfile"
@@ -67,7 +67,7 @@ services:
     logging:
       driver: "json-file"
     volumes:
-      - mariadb10_data:/var/lib/mysql
+      - centos6_mariadb10_rdbms_data:/var/lib/mysql
     ports:
       - "3306"
     working_dir: "/tmp"
@@ -77,6 +77,6 @@ services:
 # Volumes
 #
 volumes:
-  mariadb10_data:
+  centos6_mariadb10_rdbms_data:
     driver: "local"
 

@@ -24,14 +24,14 @@
 #
 
 # Base image to use
-FROM stafli/stafli.system.base:base10_centos6
+FROM stafli/stafli.init.supervisor:supervisor31_centos6
 
 # Labels to apply
-LABEL description="Stafli MariaDB RDBMS (stafli/stafli.rdbms.mariadb), Based on Stafli Base System (stafli/stafli.system.base)" \
+LABEL description="Stafli MariaDB RDBMS (stafli/stafli.rdbms.mariadb), Based on Stafli Supervisor Init (stafli/stafli.init.supervisor)" \
       maintainer="lp@algarvio.org" \
       org.label-schema.schema-version="1.0.0-rc.1" \
       org.label-schema.name="Stafli MariaDB RDBMS (stafli/stafli.rdbms.mariadb)" \
-      org.label-schema.description="Based on Stafli Base System (stafli/stafli.system.base)" \
+      org.label-schema.description="Based on Stafli Supervisor Init (stafli/stafli.init.supervisor)" \
       org.label-schema.keywords="stafli, mariadb, rdbms, debian, centos" \
       org.label-schema.url="https://stafli.org/" \
       org.label-schema.license="GPLv3" \
@@ -134,17 +134,27 @@ RUN printf "Adding users and groups...\n" && \
 # Supervisor
 RUN printf "Updading Supervisor configuration...\n" && \
     \
-    # init is not working at this point \
+    # /etc/supervisord.d/init.conf \
+    file="/etc/supervisord.d/init.conf" && \
+    printf "\n# Applying configuration for ${file}...\n" && \
+    perl -0p -i -e "s>supervisorctl start rclocal;>supervisorctl start rclocal; supervisorctl start mysql;>" ${file} && \
+    printf "Done patching ${file}...\n" && \
     \
-    # /etc/supervisord.conf \
-    file="/etc/supervisord.conf" && \
+    # /etc/supervisord.d/mysql.conf \
+    file="/etc/supervisord.d/mysql.conf" && \
     printf "\n# Applying configuration for ${file}...\n" && \
     printf "# MariaDB\n\
 [program:mysql]\n\
 command=/bin/bash -c \"\$(which mysqld_safe) --defaults-file=/etc/my.cnf\"\n\
-autostart=true\n\
+autostart=false\n\
 autorestart=true\n\
-\n" >> ${file} && \
+stdout_logfile=/dev/stdout\n\
+stdout_logfile_maxbytes=0\n\
+stderr_logfile=/dev/stderr\n\
+stderr_logfile_maxbytes=0\n\
+stdout_events_enabled=true\n\
+stderr_events_enabled=true\n\
+\n" > ${file} && \
     printf "Done patching ${file}...\n" && \
     \
     # /etc/rc.local

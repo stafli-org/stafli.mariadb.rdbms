@@ -1,6 +1,6 @@
 # Stafli MariaDB RDBMS
 Stafli MariaDB RDBMS builds based on [Debian](https://www.debian.org) and [CentOS](https://www.centos.org), and developed as scripts for [Docker](https://www.docker.com).  
-Continues on [Stafli Base System](https://github.com/stafli-org/stafli.system.base) builds.  
+Continues on [Stafli Supervisor Init](https://github.com/stafli-org/stafli.init.supervisor) builds.  
 This project is part of the [Stafli Application Stack](https://github.com/stafli-org).
 
 Requires [Docker Compose](https://docs.docker.com/compose) 1.6.x or higher due to the [version 2](https://docs.docker.com/compose/compose-file/#versioning) format of the docker-compose.yml files.
@@ -23,7 +23,7 @@ The services use custom images as a starting point for the following distributio
 
 ## Services
 These are the services described by the dockerfile and docker-compose files:
-- MariaDB 10.x.x, built on [Stafli Base System](https://github.com/stafli-org/stafli.system.base) and additional [MariaDB](https://mariadb.org) packages
+- MariaDB 10.x.x, built on [Stafli Supervisor Init](https://github.com/stafli-org/stafli.init.supervisor) and additional [MariaDB](https://mariadb.org) packages
 
 ## Images
 These are the [resulting images](https://hub.docker.com/r/stafli/stafli.rdbms.mariadb/tags) upon building:

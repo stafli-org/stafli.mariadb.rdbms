@@ -76,12 +76,15 @@ ARG app_mariadb_listen_port="3306"
 # Packages
 #
 
+# Refresh the package manager
 # Add foreign repositories and GPG keys
-#  - N/A: for MariaDB
-# Install mariadb packages
-#  - mariadb-server: for mysqld, the MariaDB relational database management system server
-#  - mariadb-client: for mysql, the MariaDB relational database management system client
-#  - mytop: for mytop, the MariaDB relational database management system top-like utility
+#  - apt.mariadb.org: for MariaDB
+# Install the selected packages
+#   Install the mariadb packages
+#    - mariadb-server: for mysqld, the MariaDB relational database management system server
+#    - mariadb-client: for mysql, the MariaDB relational database management system client
+#    - mytop: for mytop, the MariaDB relational database management system top-like utility
+# Cleanup the package manager
 RUN printf "Installing repositories and packages...\n" && \
     \
     printf "Install the foreign repositories and refresh the GPG keys...\n" && \
@@ -89,14 +92,16 @@ RUN printf "Installing repositories and packages...\n" && \
 deb http://lon1.mirrors.digitalocean.com/mariadb/repo/10.1/debian jessie main\n\
 \n" > /etc/apt/sources.list.d/mariadb.list && \
     apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && \
-    gpg --refresh-keys && \
+    \
+    printf "Refresh the package manager...\n" && \
+    apt-get update && \
     \
     printf "Install the mariadb packages...\n" && \
-    apt-get update && apt-get install -qy \
+    apt-get install -qy \
       mariadb-server mariadb-client mytop && \
     \
     printf "Cleanup the package manager...\n" && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && rm -Rf /var/cache/apt/* && \
     \
     printf "Finished installing repositories and packages...\n";
 

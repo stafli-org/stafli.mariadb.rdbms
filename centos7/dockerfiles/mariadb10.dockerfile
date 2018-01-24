@@ -76,12 +76,15 @@ ARG app_mariadb_listen_port="3306"
 # Packages
 #
 
+# Refresh the package manager
 # Add foreign repositories and GPG keys
-#  - N/A: for MariaDB
-# Install mariadb packages
-#  - MariaDB-server: for mysqld, the MariaDB relational database management system server
-#  - MariaDB-client: for mysql, the MariaDB relational database management system client
-#  - mytop: for mytop, the MariaDB relational database management system top-like utility
+#  - yum.mariadb.org: for MariaDB
+# Install the selected packages
+#   Install the mariadb packages
+#    - MariaDB-server: for mysqld, the MariaDB relational database management system server
+#    - MariaDB-client: for mysql, the MariaDB relational database management system client
+#    - mytop: for mytop, the MariaDB relational database management system top-like utility
+# Cleanup the package manager
 RUN printf "Installing repositories and packages...\n" && \
     \
     printf "Install the foreign repositories and refresh the GPG keys...\n" && \
@@ -94,13 +97,15 @@ gpgcheck=1\n\
 \n" > /etc/yum.repos.d/mariadb.repo && \
     rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB && \
     \
+    printf "Refresh the package manager...\n" && \
+    rpm --rebuilddb && yum makecache && \
+    \
     printf "Install the mariadb packages...\n" && \
-    rpm --rebuilddb && \
-    yum makecache && yum install -y \
+    yum install -y \
       MariaDB-server MariaDB-client mytop && \
     \
     printf "Cleanup the package manager...\n" && \
-    yum clean all && rm -Rf /var/lib/yum/* && \
+    yum clean all && rm -Rf /var/lib/yum/* && rm -Rf /var/cache/yum/* && \
     \
     printf "Finished installing repositories and packages...\n";
 

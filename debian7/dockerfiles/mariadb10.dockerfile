@@ -57,6 +57,7 @@ LABEL description="Stafli MariaDB RDBMS (stafli/stafli.rdbms.mariadb), Based on 
 ARG app_mariadb_user="mysql"
 ARG app_mariadb_group="mysql"
 ARG app_mariadb_home="/var/lib/mysql"
+ARG app_mariadb_loglevel="notice"
 ARG app_mariadb_listen_addr="0.0.0.0"
 ARG app_mariadb_listen_port="3306"
 
@@ -171,8 +172,21 @@ RUN printf "Updading MariaDB configuration...\n" && \
     # run as user \
     perl -0p -i -e "s>user\t\t= .*>user\t\t= ${app_mariadb_user}>" ${file} && \
     # change logging \
-    perl -0p -i -e "s>\[mysqld_safe\]>\[mysqld_safe\]\nlog-error       = /var/log/mysql/mariadb-error.log>" ${file} && \
-    perl -0p -i -e "s># Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.\n#># Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.\n#\nlog-error               = /var/log/mysql/mariadb-error.log>" ${file} && \
+    perl -0p -i -e "s>\[mysqld_safe\]>\[mysqld_safe\]\nlog_error       = /var/log/mysql/mariadb-error.log>" ${file} && \
+    perl -0p -i -e "s># Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.\n#># Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.\n#\nlog_error               = /var/log/mysql/mariadb-error.log>" ${file} && \
+    if [ "$app_mariadb_loglevel" = "notice" ]; then app_memcached_loglevel_ovr="1"; elif [ "$app_mariadb_loglevel" = "verbose" ]; then app_memcached_loglevel_ovr="2"; else app_memcached_loglevel_ovr="1"; fi && \
+    perl -0p -i -e "s>\[mysqld_safe\]>\[mysqld_safe\]\nlog_warnings    = ${app_mariadb_loglevel}>" ${file} && \
+    perl -0p -i -e "s># we do want to know about network errors and such\nlog_warnings .*># we do want to know about network errors and such\nlog_warnings            = ${app_mariadb_loglevel}>" ${file} && \
+    perl -0p -i -e "s>\[mysqld_safe\]>\[mysqld_safe\]\nlog_output      = FILE>" ${file} && \
+    perl -0p -i -e "s># we do want to know about network errors and such\nlog_warnings># we do want to know about network errors and such\nlog_output              = FILE\nlog_warnings>" ${file} && \
+    perl -0p -i -e "s>.*general_log             = .*>general_log             = 1>" ${file} && \
+    perl -0p -i -e "s>.*general_log_file        = .*>general_log_file        = /var/log/mysql/mariadb-general.log>" ${file} && \
+    perl -0p -i -e "s>.*slow_query_log\[.*>slow_query_log          = 1>" ${file} && \
+    perl -0p -i -e "s>.*slow_query_log_file     = .*>slow_query_log_file     = /var/log/mysql/mariadb-slow.log>" ${file} && \
+    perl -0p -i -e "s>.*log_slow_admin_statements>log_slow_admin_statements = 1>" ${file} && \
+    perl -0p -i -e "s>.*log-queries-not-using-indexes>log_queries_not_using_indexes = 1>" ${file} && \
+    perl -0p -i -e "s>.*log_slow_rate_limit.*>log_slow_rate_limit     = 1>" ${file} && \
+    perl -0p -i -e "s>.*long_query_time = .*>long_query_time         = 2>" ${file} && \
     # change interface \
     perl -0p -i -e "s>bind-address\t\t= .*>bind-address\t\t= ${app_mariadb_listen_addr}>" ${file} && \
     # change port \

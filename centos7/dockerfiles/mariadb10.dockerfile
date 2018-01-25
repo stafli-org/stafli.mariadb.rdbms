@@ -57,6 +57,7 @@ LABEL description="Stafli MariaDB RDBMS (stafli/stafli.rdbms.mariadb), Based on 
 ARG app_mariadb_user="mysql"
 ARG app_mariadb_group="mysql"
 ARG app_mariadb_home="/var/lib/mysql"
+ARG app_mariadb_loglevel="notice"
 ARG app_mariadb_listen_addr="0.0.0.0"
 ARG app_mariadb_listen_port="3306"
 
@@ -191,7 +192,18 @@ RUN printf "Updading MariaDB configuration...\n" && \
     # run as user \
     perl -0p -i -e "s>\[server\]>\[server\]\nuser = ${app_mariadb_user}>" ${file} && \
     # change logging \
-    perl -0p -i -e "s>\[server\]>\[server\]\nlog-error = /var/log/mysql/mariadb-error.log>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_error = /var/log/mysql/mariadb-error.log>" ${file} && \
+    if [ "$app_mariadb_loglevel" = "notice" ]; then app_mariadb_loglevel_ovr="1"; elif [ "$app_mariadb_loglevel" = "verbose" ]; then app_mariadb_loglevel_ovr="2"; else app_mariadb_loglevel_ovr="1"; fi && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_warnings = ${app_mariadb_loglevel_ovr}>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_output = FILE>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\ngeneral_log = 1>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\ngeneral_log_file = /var/log/mysql/mariadb-general.log>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nslow_query_log = 1>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nslow_query_log_file = /var/log/mysql/mariadb-slow.log>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_slow_admin_statements = 1>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_queries_not_using_indexes = 1>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlog_slow_rate_limit = 1>" ${file} && \
+    perl -0p -i -e "s>\[server\]>\[server\]\nlong_query_time = 2>" ${file} && \
     # change interface \
     perl -0p -i -e "s>\[server\]>\[server\]\nbind-address = ${app_mariadb_listen_addr}>" ${file} && \
     # change port \

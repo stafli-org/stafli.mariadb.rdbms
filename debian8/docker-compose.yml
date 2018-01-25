@@ -61,6 +61,7 @@ services:
         app_mariadb_user: "mysql"
         app_mariadb_group: "mysql"
         app_mariadb_home: "/var/lib/mysql"
+        app_mariadb_loglevel: "notice"
         app_mariadb_listen_addr: "0.0.0.0"
         app_mariadb_listen_port: "3306"
     logging:

@@ -30,6 +30,7 @@ services:
   rdbms_mariadb10_centos6:
     build:
       args:
+        app_mariadb_loglevel: "verbose"
         app_mariadb_listen_port: "3306"
     ports:
       - "3306"

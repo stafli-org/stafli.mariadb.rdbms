@@ -27,18 +27,20 @@ These are the services described by the dockerfile and docker-compose files:
 
 ## Images
 These are the [resulting images](https://hub.docker.com/r/stafli/stafli.rdbms.mariadb/tags) upon building:
-- MariaDB 10.x.x:
-  - stafli/stafli.rdbms.mariadb:mariadb10_debian8
-  - stafli/stafli.rdbms.mariadb:mariadb10_debian7
-  - stafli/stafli.rdbms.mariadb:mariadb10_centos7
-  - stafli/stafli.rdbms.mariadb:mariadb10_centos6
+- Stable:
+  - stafli/stafli.rdbms.mariadb:mariadb10_debian8   [![](https://images.microbadger.com/badges/image/stafli/stafli.rdbms.mariadb:mariadb10_debian8.svg)](https://microbadger.com/images/stafli/stafli.rdbms.mariadb:mariadb10_debian8 "Get your own image badge on microbadger.com")
+  - stafli/stafli.rdbms.mariadb:mariadb10_centos7   [![](https://images.microbadger.com/badges/image/stafli/stafli.rdbms.mariadb:mariadb10_centos7.svg)](https://microbadger.com/images/stafli/stafli.rdbms.mariadb:mariadb10_centos7 "Get your own image badge on microbadger.com")
+- Old Stable:
+  - stafli/stafli.rdbms.mariadb:mariadb10_debian7   [![](https://images.microbadger.com/badges/image/stafli/stafli.rdbms.mariadb:mariadb10_debian7.svg)](https://microbadger.com/images/stafli/stafli.rdbms.mariadb:mariadb10_debian7 "Get your own image badge on microbadger.com")
+  - stafli/stafli.rdbms.mariadb:mariadb10_centos6   [![](https://images.microbadger.com/badges/image/stafli/stafli.rdbms.mariadb:mariadb10_centos6.svg)](https://microbadger.com/images/stafli/stafli.rdbms.mariadb:mariadb10_centos6 "Get your own image badge on microbadger.com")
 
 ## Containers
 These containers can be created from the images:
-- MariaDB 10.x.x:
+- Stable:
   - stafli_rdbms_mariadb10_debian8_xxx
-  - stafli_rdbms_mariadb10_debian7_xxx
   - stafli_rdbms_mariadb10_centos7_xxx
+- Old Stable:
+  - stafli_rdbms_mariadb10_debian7_xxx
   - stafli_rdbms_mariadb10_centos6_xxx
 
 ## Usage
